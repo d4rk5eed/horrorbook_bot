@@ -36,6 +36,6 @@ defmodule AgalaBackend.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    [{:agala, "~> 1.0.2"}]
+    [{:agala, git: "https://github.com/Virviil/agala.git", branch: "develop"}]
   end
 end

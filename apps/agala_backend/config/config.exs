@@ -4,7 +4,7 @@ use Mix.Config
 
 config :agala,
   token_env: "TELEGRAM_TOKEN",
-  request_timeout: 100,
+  request_timeout: 5000,
   handler: AgalaBackend.Handler.Echo
 
 # This configuration is loaded before any dependency and is restricted
