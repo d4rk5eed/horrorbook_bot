@@ -1,9 +1,9 @@
 APP="horrorbook_bot"
-
-BUILD_HOST="52.213.200.150"
+USING_DISTILLERY="true"
+BUILD_HOST="52.48.239.176"
 BUILD_USER="ec2-user"
 BUILD_AT="/home/ec2-user/tmp/edeliver/horrorbook_bot/builds"
 
-STAGING_HOSTS="52.213.200.150"
+STAGING_HOSTS="52.48.239.176"
 STAGING_USER="ec2-user"
 DELIVER_TO="/home/ec2-user/horrorbook_bot"
