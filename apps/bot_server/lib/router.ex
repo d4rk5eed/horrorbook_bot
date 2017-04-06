@@ -1,11 +1,13 @@
 defmodule BotServer.Router do
   use Plug.Router
 
+  plug Plug.Parsers, parsers: [:urlencoded, :multipart]
   plug :match
   plug :dispatch
 
-  get "/hello" do
-    send_resp(conn, 200, "world")
+  post "/push" do
+    Agala.Bot.exec_cmd("sendMessage", %{chat_id: 127977675, parse_mode: "Markdown", text: conn.body_params["text"]})
+    send_resp(conn, 200, "ok")
   end
 
   match _ do
