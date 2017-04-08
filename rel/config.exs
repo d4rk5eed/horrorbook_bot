@@ -23,6 +23,7 @@ environment :prod do
   set include_erts: true
   set include_src: false
   set cookie: :"U=$nt>J,SCQy5FjPVbnBQ@}aSrP!T=R/rlgYqp<Yxbu|M?1^xQyig`ciB0krfSWY"
+  plugin Releases.Plugin.LinkConfig
 end
 
 # You may define one or more releases in this file.
