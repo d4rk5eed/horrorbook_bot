@@ -21,7 +21,9 @@ defmodule HorrorbookBot.Mixfile do
   # Dependencies listed here are available only for this project
   # and cannot be accessed from applications inside the apps folder
   defp deps do
-    [{:edeliver, "~> 1.4.0"},
+    [{:postgrex, ">= 0.0.0"},
+     {:ecto, "~> 2.1"},
+     {:edeliver, "~> 1.4.0"},
      {:distillery, "~> 1.0.0", warn_missing: false}]
   end
 end

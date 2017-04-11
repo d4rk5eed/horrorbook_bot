@@ -11,7 +11,7 @@ defmodule BotServer.Application do
     # Define workers and child supervisors to be supervised
     children = [
       # Starts a worker by calling: BotServer.Worker.start_link(arg1, arg2, arg3)
-      # worker(BotServer.Worker, [arg1, arg2, arg3]),
+      worker(BotServer.Repo, []),
       Plug.Adapters.Cowboy.child_spec(:http, BotServer.Router, [], [port: 4001])
     ]
 
