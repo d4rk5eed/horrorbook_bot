@@ -21,7 +21,7 @@ defmodule AgalaBackend.Handler.Echo do
 
   def handle(state, message = %{"message" => %{"text" => "/list "<>tag, "chat" => %{"id" => id}}}) do
     Logger.info("Handling message #{inspect message}")
-    pages = BotServer.Service.Markdown.split(BotServer.Page.list(%{tags: tag}))
+    pages = BotServer.Service.Markdown.split(BotServer.Page.list(%{tags: BotServer.Service.Markdown.normalize(tag)}))
     show_pages pages, id
     state
   end

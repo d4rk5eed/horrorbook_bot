@@ -20,4 +20,16 @@ defmodule BotServer.Service.Markdown do
     {h, t} = Enum.split(list, 5)
     split(t, acc ++ [h])
   end
+
+  def normalize(text) do
+    text
+    |> String.downcase
+    |> String.replace(~r/^\d+\.\s/, "")
+    |> String.replace(~r/№/, "N")
+    |> String.replace(~r/[^\w\s\p{Cyrillic}]+/u, " ")
+    |> String.replace(~r/\s{2,}/, " ")
+    |> String.replace("ё", "е")
+    |> String.replace(~r/\sда$|\sнет$/u, "")
+    |> String.trim
+  end
 end

@@ -31,4 +31,19 @@ defmodule BotServer.MarkdownTest do
     list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     assert Markdown.split(list) == [[1, 2, 3, 4, 5], [6, 7, 8, 9, 10], [11, 12]]
   end
+
+  test "normalize/1" do
+    assert Markdown.normalize("«Сядьте поудобнее. Расслабьтесь» - НЕТ") == "сядьте поудобнее расслабьтесь"
+    assert Markdown.normalize("«Сядьте поудобнее. Расслабьтесь» - ДА") == "сядьте поудобнее расслабьтесь"
+    assert Markdown.normalize("В УТРОБЕ (2)") == "в утробе 2"
+    assert Markdown.normalize("DEUS EX MMACHINA") == "deus ex mmachina"
+    assert Markdown.normalize("ГОВОРИ ДА ВСЕГДА") == "говори да всегда"
+    assert Markdown.normalize("№6") == "N6"
+    assert Markdown.normalize("20/18") == "20 18"
+    assert Markdown.normalize("30-й километр") == "30 й километр"
+    assert Markdown.normalize("32") == "32"
+    assert Markdown.normalize("4, 8, 16, 32") == "4 8 16 32"
+    assert Markdown.normalize("23. 4, 8, 16, 32") == "4 8 16 32"
+    assert Markdown.normalize("121. «Сядьте поудобнее. Расслабьтесь» - ДА") == "сядьте поудобнее расслабьтесь"
+  end
 end
