@@ -68,4 +68,20 @@ defmodule BotServer.Service.UsersTest do
     assert %User{} = Users.add_tag_for(%{chat_id: "123", tag: "a"})
     assert Users.list_tags_for(%{chat_id: "123"}) == ["a", "b"]
   end
+
+  test "del_tag_from user existing tag" do
+    %User{chat_id: "123", tags: ["a", "b"]}
+    |> User.changeset
+    |> Repo.insert
+    assert %User{} = Users.del_tag_from(%{chat_id: "123", tag: "a"})
+    assert Users.list_tags_for(%{chat_id: "123"}) == ["b"]
+  end
+
+  test "del_tag_from user non-existing tag" do
+    %User{chat_id: "123", tags: ["a", "b"]}
+    |> User.changeset
+    |> Repo.insert
+    assert %User{} = Users.del_tag_from(%{chat_id: "123", tag: "c"})
+    assert Users.list_tags_for(%{chat_id: "123"}) == ["a", "b"]
+  end
 end

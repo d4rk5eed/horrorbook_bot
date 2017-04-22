@@ -45,9 +45,21 @@ defmodule AgalaBackend.Handler.Echo do
    state
   end
 
+  def handle(state, message = %{"message" => %{"text" => "/del "<>tag, "chat" => %{"id" => id}}}) do
+    Logger.info("Handling message #{inspect message}")
+    case BotServer.Service.Users.del_tag_from(%{chat_id: id, tag: BotServer.Service.Markdown.normalize(tag)}) do
+      nil -> show_error_for id, "Не удалось удалить рассказ"
+      _user ->
+        tags = BotServer.Service.Users.list_tags_for(%{chat_id: id})
+        show_tags_for id, tags
+    end
+
+    state
+  end
+
   def handle(state, message = %{"message" => %{"text" => text, "chat" => %{"id" => id}}}) do
     Logger.info("Handling message #{inspect message}")
-    Agala.Bot.exec_cmd("sendMessage", %{chat_id: id, text: text})
+    show_default_for id
     state
   end
 
@@ -66,7 +78,19 @@ defmodule AgalaBackend.Handler.Echo do
   end
 
   defp show_tags_for(chat_id, tags) do
-    Agala.Bot.exec_cmd("sendMessage", %{chat_id: chat_id, parse_mode: "Markdown", text: Enum.join(tags, ", ")})
+    Agala.Bot.exec_cmd("sendMessage", %{chat_id: chat_id, parse_mode: "Markdown", text: "Ваш список рассказов: "<>Enum.join(tags, ", ")})
+  end
+
+  defp show_default_for(chat_id) do
+    msg = """
+    Как это использовать:
+    */list* - показать список отзывов
+    */list* _название рассказа_ - показать список отзывов по рассказу
+    */add* - показать список отслеживаемых рассказов
+    */add* _название рассказа_ - добавить рассказ для отслеживания отзывов
+    */del* _название рассказа_ - удалить отслеживаемый рассказ
+    """
+    Agala.Bot.exec_cmd("sendMessage", %{chat_id: chat_id, parse_mode: "Markdown", text: msg})
   end
 
   defp show_error_for(chat_id, error) do

@@ -40,4 +40,17 @@ defmodule BotServer.Service.Users do
    |> User.changeset(%{tags: tags})
    |> Repo.update!
   end
+
+  def del_tag_from(%{chat_id: id, tag: tag}) do
+    user = Repo.get_by(User, chat_id: to_string(id))
+
+    tags =
+      user
+      |> Map.fetch!(:tags)
+      |> List.delete(tag)
+
+    user
+    |> User.changeset(%{tags: tags})
+    |> Repo.update!
+  end
 end
