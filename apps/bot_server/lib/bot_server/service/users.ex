@@ -27,4 +27,17 @@ defmodule BotServer.Service.Users do
       {:error, changeset} -> {:error, changeset}
     end
   end
+
+  def list_tags_for(%{chat_id: id}) do
+    Repo.get_by(User, chat_id: to_string(id))
+    |> Map.fetch!(:tags)
+  end
+
+  def add_tag_for(%{chat_id: id, tag: tag}) do
+   user = Repo.get_by(User, chat_id: to_string(id))
+   tags = Enum.uniq(user.tags ++ [tag])
+   user
+   |> User.changeset(%{tags: tags})
+   |> Repo.update!
+  end
 end

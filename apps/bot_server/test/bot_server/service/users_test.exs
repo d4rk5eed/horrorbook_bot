@@ -37,4 +37,35 @@ defmodule BotServer.Service.UsersTest do
     refute touch_prev == user.last_touch
     refute updated_prev == user.updated_at
   end
+
+  test "list_tags_for on empty" do
+    %User{chat_id: "123"}
+    |> User.changeset
+    |> Repo.insert
+    assert Users.list_tags_for(%{chat_id: "123"}) == []
+  end
+
+  test "list_tags_for on existing tags" do
+    %User{chat_id: "123", tags: ["a", "b"]}
+    |> User.changeset
+    |> Repo.insert
+    assert Users.list_tags_for(%{chat_id: "123"}) == ["a", "b"]
+  end
+
+  test "add_tag_for on empty and existing tags" do
+    %User{chat_id: "123"}
+    |> User.changeset
+    |> Repo.insert
+    assert %User{} = Users.add_tag_for(%{chat_id: "123", tag: "a"})
+    assert %User{} = Users.add_tag_for(%{chat_id: "123", tag: "b"})
+    assert Users.list_tags_for(%{chat_id: "123"}) == ["a", "b"]
+  end
+
+  test "add_tag_for on duplicate tags" do
+    %User{chat_id: "123", tags: ["a", "b"]}
+    |> User.changeset
+    |> Repo.insert
+    assert %User{} = Users.add_tag_for(%{chat_id: "123", tag: "a"})
+    assert Users.list_tags_for(%{chat_id: "123"}) == ["a", "b"]
+  end
 end
